@@ -2,6 +2,8 @@ package figueiredo.lucas.springboot2.controller;
 
 
 import figueiredo.lucas.springboot2.domain.Car;
+import figueiredo.lucas.springboot2.requests.CarPostRequestBody;
+import figueiredo.lucas.springboot2.requests.CarPutRequestBody;
 import figueiredo.lucas.springboot2.service.CarsServices;
 import figueiredo.lucas.springboot2.util.DateUtil;
 import lombok.RequiredArgsConstructor;
@@ -31,12 +33,12 @@ public class CarsController {
     }
     @GetMapping(path = "/{id}")
     public ResponseEntity<Car> findById(@PathVariable long id){
-        return ResponseEntity.ok(carsServices.findById(id));
+        return ResponseEntity.ok(carsServices.findByIdOrThrowBadRequestException(id));
     }
 
     @PostMapping
-    public ResponseEntity<Car> save(@RequestBody Car car){
-        return new ResponseEntity<>(carsServices.save(car), HttpStatus.CREATED);
+    public ResponseEntity<Car> save(@RequestBody CarPostRequestBody carPostRequestBody){
+        return new ResponseEntity<>(carsServices.save(carPostRequestBody), HttpStatus.CREATED);
     }
 
     @DeleteMapping(path = "/{id}")
@@ -46,8 +48,8 @@ public class CarsController {
     }
 
     @PutMapping
-    public ResponseEntity<Void> replace(@RequestBody Car car){
-        carsServices.replace(car);
+    public ResponseEntity<Void> replace(@RequestBody CarPutRequestBody carPutRequestBody){
+        carsServices.replace(carPutRequestBody);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
